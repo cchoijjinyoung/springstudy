@@ -5,22 +5,20 @@ import hello.core.discount.FixDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // OrderServiceImpl 에서는 할인에 대해서 관여하지 않음. discountPolicy 너가 처리해. 나한테 값만 던져줘
 // --> 좋은 설계 (단일 체계 원칙)
 @Component
+@RequiredArgsConstructor
+// final이 붙은(무조건 필수값) 필드를 파라미터로 받는 생성자를 자동으로 생성.
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy; // 인터페이스만 의존
 
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
 
     // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
     // 위 코드를 할인정책을 퍼센트로 바꾸려면 new FixDiscountPolicy() 를 new Rate로 바꿔야한다.
